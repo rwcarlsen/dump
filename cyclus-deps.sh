@@ -2,9 +2,9 @@
 
 # determine system type
 SYSTEM=`uname -a`
-DEPENDENCIES='poopy cmake libxml++2.6-dev libboost-dev libsqlite3-dev coinor-libcbc-dev'
+DEPENDENCIES='cmake libxml++2.6-dev libboost-dev libsqlite3-dev coinor-libcbc-dev'
 if [[ `echo $SYSTEM | grep Ubuntu` ]]; then
-  DEPENDENCIES='poopy cmake libxml++2.6-dev libboost-dev libsqlite3-dev coinor-libcbc-dev'
+  DEPENDENCIES='cmake libxml++2.6-dev libboost-dev libsqlite3-dev coinor-libcbc-dev'
 else
   echo "Unsupported operating system type $SYSTEM"
   exit 0
@@ -17,7 +17,6 @@ do
 	if which dpkg &> /dev/null; then
 		if [[ ! `dpkg -l | grep -w "ii  $DEP "` ]]; then
 			PKGSTOINSTALL="$PKGSTOINSTALL $DEP"
-      echo "Missing dep: ${PKGSTOINSTALL}"
 		fi
 	# OpenSuse, Mandriva, Fedora, CentOs, ecc. (with rpm)
 	elif which rpm &> /dev/null; then
@@ -39,7 +38,8 @@ echo $PKGTOINSTALL
 
 # If some dependencies are missing, asks if user wants to install
 if [ "$PKGSTOINSTALL" != "" ]; then
-	echo -n "Some dependencies are missing. Want to install them? (Y/n): "
+	echo "Missing dependencies: $PKGSTOINSTALL"
+	echo -n "Do you want to install them? (Y/n): "
 	read SURE
 	# If user want to install missing dependencies
 	if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
@@ -62,18 +62,19 @@ if [ "$PKGSTOINSTALL" != "" ]; then
 		else
 			# Set $NOPKGMANAGER
 			NOPKGMANAGER=TRUE
-			echo "ERROR: impossible to found a package manager in your sistem. Please, install manually ${DEPENDENCIES}."
+			echo "ERROR: No package manager found. Please, install manually ${PKGSTOINSTALL}."
+			exit 1
 		fi
 		# Check if installation is successful
-		if [[ $? -eq 0 && ! -z $NOPKGMANAGER ]] ; then
-			echo "All dependencies are satisfied."
+		if [ $? -eq 0 ]; then
+			echo "All dependencies installed successfully"
 		# Else, if installation isn't successful
 		else
-			echo "ERROR: impossible to install some missing dependencies. Please, install manually ${DEPENDENCIES}."
+			echo "ERROR: failed to install some missing dependencies. Please, install manually ${PKGSTOINSTALL}."
 		fi
 	# Else, if user don't want to install missing dependencies
 	else
-		echo "WARNING: Some dependencies may be missing. So, please, install manually ${DEPENDENCIES}."
+		echo "WARNING: Some dependencies may be missing. Please, install manually ${PKGSTOINSTALL}."
 	fi
 fi
 
