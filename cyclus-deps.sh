@@ -2,9 +2,8 @@
 
 # determine system type
 SYSTEM=`uname -a`
-DEPENDENCIES='cmake libxml++2.6-dev libboost-dev libsqlite3-dev coinor-libcbc-dev'
 if [[ `echo $SYSTEM | grep Ubuntu` ]]; then
-  DEPENDENCIES='cmake libxml++2.6-dev libboost-dev libsqlite3-dev coinor-libcbc-dev'
+  DEPENDENCIES='cmake libxml++2.6-dev libboost-dev libsqlite3-dev libbz2-dev coinor-libcbc-dev coinor-libclp-dev coinor-libcoinutils-dev coinor-libosi-dev coinor-libcgl-dev'
 else
   echo "Unsupported operating system type $SYSTEM"
   exit 0
