@@ -6,16 +6,16 @@ JAVAFX=/opt/java/jre/lib/jfxrt.jar:/opt/java/lib/ant-javafx.jar
 
 CLASSPATH=$(LOCALLIBS):$(JAVAFX):$(SOURCEPATH)
 
-EXEC=java
-COMPILER=javac
+JR=java
+JC=javac
 FLAGS=-classpath "$(CLASSPATH)"
 
 cyclist:
 
-	$(COMPILER) $(FLAGS) $(SOURCEPATH)/cyclist/*.java
+	$(JC) $(FLAGS) $(SOURCEPATH)/cyclist/*.java
 
 run:
 
 	cd src
-	$(EXEC) $(FLAGS) cyclist/Cyclist
+	$(JR) $(FLAGS) cyclist/Cyclist
 
