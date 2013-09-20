@@ -1,0 +1,10 @@
+
+.gitignore
+
+compiler = c++
+cpp_flags = -I.
+link_flags =
+
+: foreach *.cc |> $(compiler) $(cpp_flags) -c %f -o %o |> %B.o {objs}
+: {objs} |> $(compiler) $(link_flags) %f -o %o |> sort
+
